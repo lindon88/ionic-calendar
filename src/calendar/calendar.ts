@@ -56,16 +56,16 @@ export class Calendar {
     weekHead: number[] = [0,1,2,3,4,5,6];
 
     constructor() {
-        this.today();
-        this.createMonth(this.displayYear, this.displayMonth);
+      this.today();
+      this.createMonth(this.displayYear, this.displayMonth);
     }
 
     ngOnChanges() {
-        this.createMonth(this.displayYear, this.displayMonth);
+      this.createMonth(this.displayYear, this.displayMonth);
     }
 
     ngDoCheck() {
-        this.createMonth(this.displayYear, this.displayMonth);
+      this.createMonth(this.displayYear, this.displayMonth);
     }
 
 
@@ -89,21 +89,25 @@ export class Calendar {
     }
 
     isInEvents(year, month, date) {
-        var i=0, len=this.events.length;
-        for (; i<len; i++) {
-            if (this.events[i].year == year && this.events[i].month == month && this.events[i].date == date) {
-                return true;
-            }
+      var i=0, len=this.events.length;
+      for (; i<len; i++) {
+        if (this.events[i].year == year && this.events[i].month == month && this.events[i].date == date) {
+          return true;
         }
-        return false;
+      }
+      return false;
     }
 
     getEventRecord(year, month, date):any
     {
-        var result = this.events.find((el) => {
-            return el.year == year && el.month == month && el.date == date;
-        });
-        return result?result:{};
+      let result = this.events.find((el) => {
+        return el.year === year && el.month === month && el.date === date;
+      });
+        if (result) {
+            return result;
+        } else {
+            return {};
+        }
     }
 
     createMonth(year: number, month: number) {
@@ -252,8 +256,8 @@ export class Calendar {
             this.displayMonth--;
         }
         this.onMonthSelect.emit({
-            'year': this.displayYear,
-            'month': this.displayMonth
+          'year': this.displayYear,
+          'month': this.displayMonth
         });
         this.createMonth(this.displayYear, this.displayMonth);
     }
@@ -267,8 +271,8 @@ export class Calendar {
             this.displayMonth++;
         }
         this.onMonthSelect.emit({
-            'year': this.displayYear,
-            'month': this.displayMonth
+          'year': this.displayYear,
+          'month': this.displayMonth
         });
         this.createMonth(this.displayYear, this.displayMonth);
     }
@@ -286,11 +290,11 @@ export class Calendar {
 }
 
 interface singularDate {
-    year: number,
-    month: number,
-    date: number,
-    onClick?: any,
-    eventCSS?:string
+  year: number,
+  month: number,
+  date: number,
+  onClick?: any,
+  eventCSS?:string
 }
 
 // Each grid item of a calendar
