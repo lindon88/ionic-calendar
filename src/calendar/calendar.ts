@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import {Component, Input, Output, EventEmitter} from '@angular/core';
 import * as moment from 'moment';
 import * as _ from "lodash";
 
@@ -57,26 +57,28 @@ export class Calendar {
     weekHead: string[] = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
     constructor() {
-      this.today();
-      this.createMonth(this.displayYear, this.displayMonth);
+        this.today();
+        this.createMonth(this.displayYear, this.displayMonth, events);
     }
 
     ngOnChanges() {
-      this.createMonth(this.displayYear, this.displayMonth);
+        this.createMonth(this.displayYear, this.displayMonth, this.events);
     }
 
     ngAfterContentInit() {
-      if (!this.lang) { this.lang = 'en'; }
-      if (this.lang === 'es') {
-        this.weekHead = ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'];
-      }
+        if (!this.lang) {
+            this.lang = 'en';
+        }
+        if (this.lang === 'es') {
+            this.weekHead = ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'];
+        }
     }
 
     // Jump to today
     today() {
         this.displayYear = this.currentYear;
         this.displayMonth = this.currentMonth;
-        this.createMonth(this.currentYear, this.currentMonth);
+        this.createMonth(this.currentYear, this.currentMonth, this.events);
 
         // Mark today as a selection
         let todayIndex = _.findIndex(this.dateArray, {
@@ -92,19 +94,20 @@ export class Calendar {
     }
 
     isInEvents(year, month, date) {
-      var i=0, len=this.events.length;
-      for (; i<len; i++) {
-        if (this.events[i].year == year && this.events[i].month == month && this.events[i].date == date) {
-          return true;
+        var i = 0, len = this.events.length;
+        for (; i < len; i++) {
+            if (this.events[i].year == year && this.events[i].month == month && this.events[i].date == date) {
+                return true;
+            }
         }
-      }
-      return false;
+        return false;
     }
 
-    createMonth(year: number, month: number) {
+    createMonth(year: number, month: number, events: any) {
         this.dateArray = []; // Clear last month's data
         this.weekArray = []; // Clear week data
-
+        console.log("CREATE MONTH");
+        console.log(events);
         let firstDay;
         // The day of the week on the first day of the current month of
         // selection determines how many days to take out last month. Sunday
@@ -115,15 +118,15 @@ export class Calendar {
         let monthDays; // The number of days for the month
         let weekDays: Array<dateObj> = [];
 
-        firstDay = moment({ year: year, month: month, date: 1 }).day();
+        firstDay = moment({year: year, month: month, date: 1}).day();
         // The number of days last month
         if (month === 0) {
-            preMonthDays = moment({ year: year - 1, month: 11 }).daysInMonth();
+            preMonthDays = moment({year: year - 1, month: 11}).daysInMonth();
         } else {
-            preMonthDays = moment({ year: year, month: month - 1 }).daysInMonth();
+            preMonthDays = moment({year: year, month: month - 1}).daysInMonth();
         }
         // The number of days this month
-        monthDays = moment({ year: year, month: month }).daysInMonth();
+        monthDays = moment({year: year, month: month}).daysInMonth();
 
         // PREVIOUS MONTH
         // Add the last few days of the previous month to the array
@@ -138,7 +141,7 @@ export class Calendar {
                         isThisMonth: false,
                         isToday: false,
                         isSelect: false,
-                        hasEvent: (this.isInEvents(year, 11, lastMonthStart+i)) ? true : false,
+                        hasEvent: (this.isInEvents(year, 11, lastMonthStart + i)) ? true : false,
                     })
                 } else {
                     this.dateArray.push({
@@ -148,7 +151,7 @@ export class Calendar {
                         isThisMonth: false,
                         isToday: false,
                         isSelect: false,
-                        hasEvent: (this.isInEvents(year, month-1, lastMonthStart+i)) ? true : false,
+                        hasEvent: (this.isInEvents(year, month - 1, lastMonthStart + i)) ? true : false,
                     })
                 }
 
@@ -164,7 +167,7 @@ export class Calendar {
                 isThisMonth: true,
                 isToday: false,
                 isSelect: false,
-                hasEvent: (this.isInEvents(year, month, i+1)) ? true : false,
+                hasEvent: (this.isInEvents(year, month, i + 1)) ? true : false,
             })
         }
 
@@ -190,7 +193,7 @@ export class Calendar {
                         isThisMonth: false,
                         isToday: false,
                         isSelect: false,
-                        hasEvent: (this.isInEvents(year, 0, i+1)) ? true : false,
+                        hasEvent: (this.isInEvents(year, 0, i + 1)) ? true : false,
                     })
                 } else {
                     this.dateArray.push({
@@ -200,7 +203,7 @@ export class Calendar {
                         isThisMonth: false,
                         isToday: false,
                         isSelect: false,
-                        hasEvent: (this.isInEvents(year, month+1, i+1)) ? true : false,
+                        hasEvent: (this.isInEvents(year, month + 1, i + 1)) ? true : false,
                     })
                 }
 
@@ -228,10 +231,10 @@ export class Calendar {
             this.displayMonth--;
         }
         this.onMonthSelect.emit({
-          'year': this.displayYear,
-          'month': this.displayMonth
+            'year': this.displayYear,
+            'month': this.displayMonth
         });
-        this.createMonth(this.displayYear, this.displayMonth);
+        this.createMonth(this.displayYear, this.displayMonth, this.events);
     }
 
     forward() {
@@ -243,10 +246,10 @@ export class Calendar {
             this.displayMonth++;
         }
         this.onMonthSelect.emit({
-          'year': this.displayYear,
-          'month': this.displayMonth
+            'year': this.displayYear,
+            'month': this.displayMonth
         });
-        this.createMonth(this.displayYear, this.displayMonth);
+        this.createMonth(this.displayYear, this.displayMonth, this.events);
     }
 
     // Select a day, click event
@@ -262,9 +265,11 @@ export class Calendar {
 }
 
 interface singularDate {
-  year: number,
-  month: number,
-  date: number
+    year: number,
+    month: number,
+    date: number,
+    color: string,
+    count: number
 }
 
 // Each grid item of a calendar
