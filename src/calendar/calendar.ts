@@ -104,6 +104,7 @@ export class Calendar {
         return el.year === year && el.month === month && el.date === date;
       });
         if (result) {
+            console.log(result);
             return result;
         } else {
             return {};
