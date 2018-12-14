@@ -19,14 +19,15 @@ import * as _ from "lodash";
         </ion-row>
 
         <ion-row>
-            <ion-col class="center calendar-header-col" *ngFor="let head of weekHead">{{head | weekdayName:lang}}</ion-col>
+            <ion-col class="center calendar-header-col" *ngFor="let head of weekHead">{{head}}</ion-col>
         </ion-row>
 
         <ion-row class="calendar-row" *ngFor="let week of weekArray;let i = index">
-            <ion-col class="center calendar-col" (click)="day.onClick?day.onClick():daySelect(day,i,j)"
+            <ion-col class="center calendar-col" (click)="daySelect(day,i,j)"
             *ngFor="let day of week;let j = index"
-            [ngClass]="[day.isThisMonth?'this-month':'not-this-month',day.isToday?'today':'',day.isSelect?'select':'',day.hasEvent&&day.eventCSS?day.eventCSS:'']">
+            [ngClass]="[day.isThisMonth?'this-month':'not-this-month',day.isToday?'today':'',day.isSelect?'select':'']">
                 {{day.date}}
+                <span class="eventBlip" *ngIf="day.hasEvent"></span>
             </ion-col>
         </ion-row>
 
@@ -53,7 +54,7 @@ export class Calendar {
     weekArray = []; // Array for each row of the calendar
     lastSelect: number = 0; // Record the last clicked location
 
-    weekHead: number[] = [0,1,2,3,4,5,6];
+    weekHead: string[] = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
     constructor() {
       this.today();
@@ -64,10 +65,12 @@ export class Calendar {
       this.createMonth(this.displayYear, this.displayMonth);
     }
 
-    ngDoCheck() {
-      this.createMonth(this.displayYear, this.displayMonth);
+    ngAfterContentInit() {
+      if (!this.lang) { this.lang = 'en'; }
+      if (this.lang === 'es') {
+        this.weekHead = ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'];
+      }
     }
-
 
     // Jump to today
     today() {
@@ -98,14 +101,6 @@ export class Calendar {
       return false;
     }
 
-    getEventRecord(year, month, date):any
-    {
-      var result = this.events.find((el) => {
-        return el.year == year && el.month == month && el.date == date;
-      });
-      return result?result:{};
-    }
-
     createMonth(year: number, month: number) {
         this.dateArray = []; // Clear last month's data
         this.weekArray = []; // Clear week data
@@ -132,15 +127,10 @@ export class Calendar {
 
         // PREVIOUS MONTH
         // Add the last few days of the previous month to the array
-
-        //get event record
-        // let record = this.getEventRecord()
-
         if (firstDay !== 7) { // Sunday doesn't need to be shown for the previous month
             let lastMonthStart = preMonthDays - firstDay + 1; // From the last few months start
             for (let i = 0; i < firstDay; i++) {
                 if (month === 0) {
-                    let record = this.getEventRecord(year,11,lastMonthStart + i);
                     this.dateArray.push({
                         year: year,
                         month: 11,
@@ -149,11 +139,8 @@ export class Calendar {
                         isToday: false,
                         isSelect: false,
                         hasEvent: (this.isInEvents(year, 11, lastMonthStart+i)) ? true : false,
-                        onClick: record.onClick,
-                        eventCSS: record.eventCSS
                     })
                 } else {
-                    let record = this.getEventRecord(year,month-1,lastMonthStart + i);
                     this.dateArray.push({
                         year: year,
                         month: month - 1,
@@ -162,8 +149,6 @@ export class Calendar {
                         isToday: false,
                         isSelect: false,
                         hasEvent: (this.isInEvents(year, month-1, lastMonthStart+i)) ? true : false,
-                        onClick: record.onClick,
-                        eventCSS: record.eventCSS
                     })
                 }
 
@@ -172,7 +157,6 @@ export class Calendar {
 
         // Add the numeral for this month to the array
         for (let i = 0; i < monthDays; i++) {
-            let record = this.getEventRecord(year,month,i + 1);
             this.dateArray.push({
                 year: year,
                 month: month,
@@ -181,8 +165,6 @@ export class Calendar {
                 isToday: false,
                 isSelect: false,
                 hasEvent: (this.isInEvents(year, month, i+1)) ? true : false,
-                onClick: record.onClick,
-                eventCSS: record.eventCSS
             })
         }
 
@@ -200,7 +182,6 @@ export class Calendar {
         if (this.dateArray.length % 7 !== 0) {
             let nextMonthAdd = 7 - this.dateArray.length % 7
             for (let i = 0; i < nextMonthAdd; i++) {
-                let record = this.getEventRecord(year,0,i + 1);
                 if (month === 11) {
                     this.dateArray.push({
                         year: year,
@@ -210,11 +191,8 @@ export class Calendar {
                         isToday: false,
                         isSelect: false,
                         hasEvent: (this.isInEvents(year, 0, i+1)) ? true : false,
-                        onClick: record.onClick,
-                        eventCSS: record.eventCSS
                     })
                 } else {
-                    let record = this.getEventRecord(year,month + 1,i + 1);
                     this.dateArray.push({
                         year: year,
                         month: month + 1,
@@ -223,8 +201,6 @@ export class Calendar {
                         isToday: false,
                         isSelect: false,
                         hasEvent: (this.isInEvents(year, month+1, i+1)) ? true : false,
-                        onClick: record.onClick,
-                        eventCSS: record.eventCSS
                     })
                 }
 
@@ -288,9 +264,7 @@ export class Calendar {
 interface singularDate {
   year: number,
   month: number,
-  date: number,
-  onClick?: any,
-  eventCSS?:string
+  date: number
 }
 
 // Each grid item of a calendar
@@ -302,6 +276,4 @@ interface dateObj {
     isToday?: boolean,
     isSelect?: boolean,
     hasEvent?: boolean,
-    onClick?: any,
-    eventCSS?: string,
 }
