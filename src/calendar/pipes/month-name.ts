@@ -6,7 +6,7 @@ import * as moment from 'moment';
 })
 export class monthName {
   transform(value, args) {
-    var lang = moment().locale('en');
+    var lang = moment().locale(args);
     return lang.localeData().months(moment([2012, value - 1]));
   }
 }
