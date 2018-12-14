@@ -27,7 +27,7 @@ import * as _ from "lodash";
             *ngFor="let day of week;let j = index"
             [ngClass]="[day.isThisMonth?'this-month':'not-this-month',day.isToday?'today':'',day.isSelect?'select':'']">
                 {{day.date}}
-                <span class="eventBlip" *ngIf="day.hasEvent">1</span>
+                <span class="eventBlip" *ngIf="day.hasEvent" [ngClass]="day.getColor">{{day.getCount}}</span>
             </ion-col>
         </ion-row>
 
