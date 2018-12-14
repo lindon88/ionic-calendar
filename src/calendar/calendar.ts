@@ -58,7 +58,7 @@ export class Calendar {
 
     constructor() {
         this.today();
-        this.createMonth(this.displayYear, this.displayMonth, events);
+        this.createMonth(this.displayYear, this.displayMonth, this.events);
     }
 
     ngOnChanges() {
