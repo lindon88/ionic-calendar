@@ -1,4 +1,4 @@
-# Ionic Calendar Multilanguage
+# Ionic Calendar (English and Spanish)
 
 ![image](https://raw.githubusercontent.com/gbrits/ionic-calendar/master/calendar.png?raw=true)
 
