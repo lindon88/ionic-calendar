@@ -93,10 +93,10 @@ export class Calendar {
         this.onDaySelect.emit(this.dateArray[todayIndex]);
     }
 
-    isInEvents(year, month, date) {
+    isInEvents(year, month, date, color, count) {
         var i=0, len=this.events.length;
         for (; i<len; i++) {
-            if (this.events[i].year == year && this.events[i].month == month && this.events[i].date == date) {
+            if (this.events[i].year == year && this.events[i].month == month && this.events[i].date == date && this.events[i].color == color && this.events[i].count == count) {
                 return true;
             }
         }
@@ -142,7 +142,7 @@ export class Calendar {
                         isThisMonth: false,
                         isToday: false,
                         isSelect: false,
-                        hasEvent: (this.isInEvents(year, 11, lastMonthStart+i)) ? true : false,
+                        hasEvent: (this.isInEvents(year, 11, lastMonthStart+i, 'purple', 0)) ? true : false,
                     })
                 } else {
                     this.dateArray.push({
@@ -154,7 +154,7 @@ export class Calendar {
                         isThisMonth: false,
                         isToday: false,
                         isSelect: false,
-                        hasEvent: (this.isInEvents(year, month-1, lastMonthStart+i)) ? true : false,
+                        hasEvent: (this.isInEvents(year, month-1, lastMonthStart+i, 'purple', 0)) ? true : false,
                     })
                 }
 
@@ -172,7 +172,7 @@ export class Calendar {
                 isThisMonth: true,
                 isToday: false,
                 isSelect: false,
-                hasEvent: (this.isInEvents(year, month, i+1)) ? true : false,
+                hasEvent: (this.isInEvents(year, month, i+1, 'purple', 0)) ? true : false,
             })
         }
 
@@ -200,7 +200,7 @@ export class Calendar {
                         isThisMonth: false,
                         isToday: false,
                         isSelect: false,
-                        hasEvent: (this.isInEvents(year, 0, i+1)) ? true : false,
+                        hasEvent: (this.isInEvents(year, 0, i+1, 'purple', 0)) ? true : false,
                     })
                 } else {
                     this.dateArray.push({
@@ -212,7 +212,7 @@ export class Calendar {
                         isThisMonth: false,
                         isToday: false,
                         isSelect: false,
-                        hasEvent: (this.isInEvents(year, month+1, i+1)) ? true : false,
+                        hasEvent: (this.isInEvents(year, month+1, i+1, 'purple', 0)) ? true : false,
                     })
                 }
 
