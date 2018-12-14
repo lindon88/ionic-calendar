@@ -113,6 +113,16 @@ export class Calendar {
         return null;
     }
 
+    getCount(year, month, date) {
+        let i = 0, len = this.events.length;
+        for(; i < len; i++) {
+            if(this.events[i].year == year && this.events[i].month == month && this.events[i].date == date) {
+                return this.events[i].count;
+            }
+        }
+        return 0;
+    }
+
     createMonth(year: number, month: number, events: any) {
         this.dateArray = []; // Clear last month's data
         this.weekArray = []; // Clear week data
@@ -152,7 +162,8 @@ export class Calendar {
                         isToday: false,
                         isSelect: false,
                         hasEvent: (this.isInEvents(year, 11, lastMonthStart + i)) ? true : false,
-                        getColor: this.getColor(year, 11, lastMonthStart + i)
+                        getColor: this.getColor(year, 11, lastMonthStart + i),
+                        getCount: this.getCount(year, 11, lastMonthStart + i),
                     })
                 } else {
                     this.dateArray.push({
@@ -163,7 +174,8 @@ export class Calendar {
                         isToday: false,
                         isSelect: false,
                         hasEvent: (this.isInEvents(year, month - 1, lastMonthStart + i)) ? true : false,
-                        getColor: this.getColor(year, month - 1, lastMonthStart + 1)
+                        getColor: this.getColor(year, month - 1, lastMonthStart + 1),
+                        getCount: this.getCount(year, month - 1, lastMonthStart + 1)
                     })
                 }
 
@@ -180,7 +192,8 @@ export class Calendar {
                 isToday: false,
                 isSelect: false,
                 hasEvent: (this.isInEvents(year, month, i + 1)) ? true : false,
-                getColor: this.getColor(year, month, i+1)
+                getColor: this.getColor(year, month, i+1),
+                getCount: this.getCount(year, month, i+1)
             })
         }
 
@@ -207,7 +220,8 @@ export class Calendar {
                         isToday: false,
                         isSelect: false,
                         hasEvent: (this.isInEvents(year, 0, i + 1)) ? true : false,
-                        getColor: this.getColor(year, 0, i + 1)
+                        getColor: this.getColor(year, 0, i + 1),
+                        getCount: this.getCount(year, 0, i + 1)
                     })
                 } else {
                     this.dateArray.push({
@@ -218,7 +232,8 @@ export class Calendar {
                         isToday: false,
                         isSelect: false,
                         hasEvent: (this.isInEvents(year, month + 1, i + 1)) ? true : false,
-                        getColor: this.getColor(year, month + 1, i + 1)
+                        getColor: this.getColor(year, month + 1, i + 1),
+                        getCount: this.getCount(year, month + 1, i + 1)
                     })
                 }
 
@@ -296,5 +311,6 @@ interface dateObj {
     isToday?: boolean,
     isSelect?: boolean,
     hasEvent?: boolean,
-    getColor: string
+    getColor: string,
+    getCount: number
 }
