@@ -6,7 +6,7 @@ import * as _ from "lodash";
     selector: 'ion-calendar',
     template: `
     <ion-grid>
-        <ion-row justify-content-center>
+        <ion-row class="calendar-header" justify-content-center>
             <ion-col col-auto (click)="back()">
                 <ion-icon ios="ios-arrow-back" md="md-arrow-back"></ion-icon>
             </ion-col>
