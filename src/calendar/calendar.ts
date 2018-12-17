@@ -7,13 +7,13 @@ import * as _ from "lodash";
     template: `
     <ion-grid>
         <ion-row class="calendar-header" justify-content-center>
-            <ion-col col-auto (click)="back()">
+            <ion-col col-2 col-auto (click)="back()">
                 <ion-icon ios="ios-arrow-back" md="md-arrow-back"></ion-icon>
             </ion-col>
-            <ion-col col-auto>
+            <ion-col col-8 col-auto>
                 <div>{{displayMonth + 1 | monthName:lang}}, {{displayYear}}</div>
             </ion-col>
-            <ion-col col-auto (click)="forward()">
+            <ion-col col-2 col-auto (click)="forward()">
                 <ion-icon ios="ios-arrow-forward" md="md-arrow-forward"></ion-icon>
             </ion-col>
         </ion-row>
