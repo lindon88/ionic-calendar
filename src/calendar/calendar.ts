@@ -18,7 +18,7 @@ import * as _ from "lodash";
             </ion-col>
         </ion-row>
 
-        <ion-row>
+        <ion-row class="week-names">
             <ion-col class="center calendar-header-col" *ngFor="let head of weekHead">{{head}}</ion-col>
         </ion-row>
 
