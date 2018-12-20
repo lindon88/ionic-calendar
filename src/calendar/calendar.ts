@@ -5,7 +5,7 @@ import * as _ from "lodash";
 @Component({
     selector: 'ion-calendar',
     template: `
-    <ion-grid>
+    <ion-grid (swipe)="swipe($event)">
         <ion-row class="calendar-header" justify-content-center>
             <ion-col col-2 col-auto (click)="back()">
                 <ion-icon ios="ios-arrow-back" md="md-arrow-back"></ion-icon>
@@ -291,6 +291,15 @@ export class Calendar {
         this.dateArray[i * 7 + j].isSelect = true;
 
         this.onDaySelect.emit(day);
+    }
+
+    swipe(event) {
+        if(event.direction === 2) {
+            this.forward();
+        }
+        if(event.direction === 4) {
+            this.back();
+        }
     }
 }
 
